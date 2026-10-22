@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maths & CS Study Buddy</title>
+<style>
+:root{--bg:#f6f4ee;--card:#fdfcf8;--text:#14213d;--muted:#5b6785;--line:#dcd8cc;--accent:#14285e;--accent2:#2d4a8a;--accent-t:#fff;--soft:#ece9df;--good:#2e9e5b;--bad:#d9534f;--pet:#1c1c22;--pet2:#08080b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1230;--card:#132042;--text:#eeeadf;--muted:#9aa6c6;--line:#243462;--accent:#8fa8ff;--accent2:#a9bcff;--accent-t:#0b1230;--soft:#1a2750;--good:#5fd28d;--bad:#ff7b76;--pet:#1c1c22;--pet2:#08080b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b1230;--card:#132042;--text:#eeeadf;--muted:#9aa6c6;--line:#243462;--accent:#8fa8ff;--accent2:#a9bcff;--accent-t:#0b1230;--soft:#1a2750;--good:#5fd28d;--bad:#ff7b76;--pet:#1c1c22;--pet2:#08080b;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;transition:background .25s,color .25s}
+main{max-width:720px;margin:0 auto;padding:18px 16px 70px}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px}
+h1{font-size:1.4rem;margin:0}
+#theme{background:var(--soft);color:var(--text);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:.85rem;cursor:pointer}
+.petwrap{display:flex;align-items:flex-end;gap:10px;margin:14px 0 8px}
+.bubble{background:var(--card);border:1px solid var(--line);border-radius:16px 16px 16px 4px;padding:10px 14px;font-size:.95rem;flex:1;position:relative;min-height:46px}
+#pet{width:112px;height:112px;flex:none}
+#pet svg{width:100%;height:100%;overflow:visible}
+.eye{transform-origin:center;transform-box:fill-box;animation:blink 4.5s infinite}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+.tail{transform-origin:84px 92px;animation:wag 2.4s ease-in-out infinite}
+@keyframes wag{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(14deg)}}
+.body{animation:breathe 3s ease-in-out infinite;transform-origin:60px 100px}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+.m-happy,.m-sad,.m-think,.m-love{display:none}
+#pet.happy .m-idle,#pet.sad .m-idle,#pet.think .m-idle{display:none}
+#pet.happy .m-happy,#pet.sad .m-sad,#pet.think .m-think{display:inline}
+#pet.happy svg{animation:hop .6s ease-in-out 3}
+#pet.sad svg{animation:droop 1.2s ease-out 1;transform-origin:60px 110px}
+#pet.think svg{animation:bob 1.2s ease-in-out infinite}
+@keyframes hop{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
+@keyframes droop{0%{transform:rotate(0)}40%{transform:rotate(-5deg) translateY(3px)}100%{transform:rotate(0)}}
+@keyframes bob{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:12px;box-shadow:0 2px 0 var(--line)}
+.lvls{display:flex;gap:6px;background:var(--soft);padding:5px;border-radius:999px;margin-bottom:12px}
+.lvls button{flex:1;border:0;background:transparent;color:var(--muted);padding:8px 6px;border-radius:999px;font:inherit;font-size:.9rem;font-weight:600;cursor:pointer}
+.lvls button.on{background:var(--accent2);color:var(--accent-t)}
+textarea,input[type=text]{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;background:var(--bg);color:var(--text)}
+textarea{min-height:70px;resize:vertical}
+button.main{background:var(--accent);color:var(--accent-t);border:0;border-radius:12px;padding:11px 18px;font:inherit;font-weight:700;cursor:pointer}
+button.alt{background:var(--soft);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:10px 16px;font:inherit;font-weight:600;cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{background:var(--soft);border:1px solid var(--line);color:var(--text);border-radius:999px;padding:6px 12px;font-size:.85rem;cursor:pointer}
+.lesson h2{font-size:1.15rem;margin:1.1em 0 .2em;color:var(--accent2)}
+.lesson h3{font-size:1rem;margin:1em 0 .1em}
+.lesson p{margin:.5em 0}.lesson ul{padding-left:1.2em;margin:.4em 0}.lesson li{margin:.25em 0}
+.lesson .qa{border-top:1px dashed var(--line);margin-top:14px;padding-top:6px}
+.q{font-size:1.1rem;font-weight:700;margin:6px 0 12px}
+.opt{display:block;width:100%;text-align:left;background:var(--bg);color:var(--text);border:2px solid var(--line);border-radius:12px;padding:11px 14px;margin:8px 0;font:inherit;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--accent2)}
+.opt.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 15%,var(--bg))}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 15%,var(--bg))}
+.why{background:var(--soft);border-radius:12px;padding:10px 14px;margin-top:10px;font-size:.94rem}
+.prog{height:8px;background:var(--soft);border-radius:99px;overflow:hidden;margin-bottom:10px}
+.prog i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.score{font-size:2.4rem;font-weight:800;text-align:center;margin:6px 0}
+.err{color:var(--bad);margin-top:10px}
+.small{font-size:.8rem;color:var(--muted);margin-top:14px}
+[hidden]{display:none!important}
+#pet svg [fill="#2b2430"]{fill:#ffd24a}
+#pet svg [stroke="#2b2430"]{stroke:#ffd24a}
+:root[data-theme="dark"] #pet svg{filter:drop-shadow(0 0 1.5px rgba(255,255,255,.6))}
+.lesson pre{background:#0b1230;color:#e8ecff;border-radius:12px;padding:12px 14px;overflow-x:auto;font-size:.88rem;line-height:1.5}
+.lesson code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--soft);padding:1px 5px;border-radius:6px;font-size:.9em}
+.lesson pre code{background:none;padding:0}
+</style>
+</head>
+<body>
+<main>
+  <header><h1>🧮 Maths & CS Study Buddy</h1><button id="theme" aria-label="Switch between light and dark theme">🌙 Dark</button></header>
+
+  <div class="petwrap">
+    <div id="pet" aria-hidden="true">
+      <svg viewBox="0 0 120 120">
+        <g class="tail"><path d="M84 92 Q112 86 106 58" fill="none" stroke="var(--pet2)" stroke-width="9" stroke-linecap="round"/></g>
+        <g class="body">
+          <ellipse cx="60" cy="96" rx="30" ry="20" fill="var(--pet)"/>
+          <ellipse cx="60" cy="102" rx="16" ry="12" fill="#fff" opacity=".55"/>
+          <ellipse cx="42" cy="112" rx="9" ry="5" fill="var(--pet2)"/><ellipse cx="78" cy="112" rx="9" ry="5" fill="var(--pet2)"/>
+          <path d="M30 40 L34 12 L54 30 Z" fill="var(--pet)"/><path d="M90 40 L86 12 L66 30 Z" fill="var(--pet)"/>
+          <path d="M35 33 L37 20 L47 30 Z" fill="#ffb5b5"/><path d="M85 33 L83 20 L73 30 Z" fill="#ffb5b5"/>
+          <circle cx="60" cy="54" r="34" fill="var(--pet)"/>
+          <circle cx="40" cy="62" r="6" fill="#ff9aa2" opacity=".6"/><circle cx="80" cy="62" r="6" fill="#ff9aa2" opacity=".6"/>
+          <g class="m-idle"><ellipse class="eye" cx="46" cy="52" rx="4.5" ry="6" fill="#2b2430"/><ellipse class="eye" cx="74" cy="52" rx="4.5" ry="6" fill="#2b2430"/><circle cx="47.5" cy="49.5" r="1.6" fill="#fff"/><circle cx="75.5" cy="49.5" r="1.6" fill="#fff"/><path d="M52 66 Q56 70 60 66 Q64 70 68 66" fill="none" stroke="#2b2430" stroke-width="2.2" stroke-linecap="round"/></g>
+          <g class="m-happy"><path d="M40 54 Q46 45 52 54" fill="none" stroke="#2b2430" stroke-width="3" stroke-linecap="round"/><path d="M68 54 Q74 45 80 54" fill="none" stroke="#2b2430" stroke-width="3" stroke-linecap="round"/><path d="M50 64 Q60 77 70 64 Z" fill="#c0392b"/><text x="94" y="30" font-size="14">✨</text><text x="12" y="34" font-size="12">💖</text></g>
+          <g class="m-sad"><ellipse cx="46" cy="54" rx="4.5" ry="5.5" fill="#2b2430"/><ellipse cx="74" cy="54" rx="4.5" ry="5.5" fill="#2b2430"/><path d="M38 44 L52 48 M82 44 L68 48" stroke="#2b2430" stroke-width="2.2" stroke-linecap="round"/><path d="M52 71 Q60 64 68 71" fill="none" stroke="#2b2430" stroke-width="2.2" stroke-linecap="round"/><text x="84" y="48" font-size="11">💧</text></g>
+          <g class="m-think"><circle cx="46" cy="50" r="4.5" fill="#2b2430"/><circle cx="74" cy="50" r="4.5" fill="#2b2430"/><circle cx="47.5" cy="48.5" r="1.5" fill="#fff"/><circle cx="75.5" cy="48.5" r="1.5" fill="#fff"/><ellipse cx="60" cy="68" rx="4" ry="3" fill="#2b2430"/><text x="92" y="22" font-size="14">💭</text></g>
+          <path d="M57 59 L63 59 L60 63 Z" fill="#e57373"/>
+          <path d="M26 60 L10 56 M26 66 L10 68 M94 60 L110 56 M94 66 L110 68" stroke="#2b2430" stroke-width="1.2" opacity=".35" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    <div class="bubble" id="say">Hi, I’m Mochi! Tell me which maths or computer science topic you’d like to learn.</div>
+  </div>
+
+  <div class="card">
+    <div class="lvls" id="lvls" role="group" aria-label="Explanation level">
+      <button data-l="beginner" class="on">🌱 Beginner</button>
+      <button data-l="intermediate">🌿 Intermediate</button>
+      <button data-l="advanced">🌳 Advanced</button>
+    </div>
+
+    <section id="ask">
+      <textarea id="topic" placeholder="Which maths or CS topic? e.g. How does quicksort work?"></textarea>
+      <div class="row"><button class="main" id="go">Teach me</button></div>
+      <div class="chips" id="ex"></div>
+    </section>
+
+    <section id="learn" hidden>
+      <div class="lesson" id="lesson"></div>
+      <div class="row" id="learnBtns" hidden>
+        <button class="main" id="got">✅ I understand, quiz me!</button>
+        <button class="alt" id="newTopic">➕ Learn another topic</button>
+      </div>
+      <div id="fuBox" hidden style="margin-top:14px">
+        <input type="text" id="fu" placeholder="Still confused? Ask a follow-up question…">
+        <div class="row"><button class="alt" id="fuGo">Ask</button></div>
+      </div>
+    </section>
+
+    <section id="quiz" hidden>
+      <div class="prog"><i id="bar" style="width:0"></i></div>
+      <div id="qbody"></div>
+    </section>
+
+    <div class="err" id="err" hidden></div>
+    <p class="small">Change the level any time and I’ll explain it again. Mochi covers university-level maths and computer science from Claude’s knowledge, so double-check proofs and results before relying on them. Everything stays on this page and resets when you reload.</p>
+  </div>
+</main>
+
+<script>
+/* Standalone shim: replaces claude.ai's built-in "sample" with calls to /api/chat */
+window.claude={use:async()=>{
+  const sample=async(prompt,opts={})=>{
+    const r=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt}),signal:opts.signal});
+    const d=await r.json().catch(()=>({}));
+    if(!r.ok){const e=new Error(d.error||"Request failed");e.code=r.status===429?"rate_limited":"error";throw e;}
+    if(opts.onText)opts.onText({text:d.text});
+    return {text:d.text,truncated:!!d.truncated};
+  };
+  sample.json=async(p,o)=>{const r=await sample(p,o);return JSON.parse(r.text.replace(/```json|```/g,"").trim());};
+  return sample;
+}};
+</script>
+<script>
+const $ = id => document.getElementById(id);
+const state = { level:"beginner", topics:[], notes:[], lastTopic:"", lastFull:"", busy:false, quiz:null, qi:0, score:0 };
+const levelDesc = {
+  beginner:"BEGINNER: the learner is a first-year university student meeting this for the first time. Build intuition first with a simple analogy or tiny concrete example, define every term and symbol, avoid heavy formalism, and walk through one small worked example step by step.",
+  intermediate:"INTERMEDIATE: the learner has the standard first-year background. Use correct notation and terminology, state definitions and key theorems or complexity results, explain why they hold at a sketch level, and include a worked example or short code.",
+  advanced:"ADVANCED: the learner is a strong upper-level or graduate student. Be rigorous: precise definitions, proofs or proof sketches, complexity or convergence analysis, edge cases, common pitfalls, and links to related results."
+};
+const examples = ["Explain eigenvalues and eigenvectors","How does Big-O notation work?","What is Bayes’ theorem?","How does gradient descent work?"];
+
+/* theme */
+const root = document.documentElement;
+function setTheme(t){ root.setAttribute("data-theme",t); $("theme").textContent = t==="dark" ? "☀️ Light" : "🌙 Dark"; }
+setTheme(matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+$("theme").onclick = () => setTheme(root.getAttribute("data-theme")==="dark" ? "light" : "dark");
+
+/* pet */
+let petTimer;
+function pet(mood, text, ms){
+  $("pet").className = mood || "";
+  if (text) $("say").textContent = text;
+  clearTimeout(petTimer);
+  if (ms) petTimer = setTimeout(()=>{ $("pet").className=""; }, ms);
+}
+
+/* tiny markdown */
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const inl = s => esc(s).replace(/`([^`\n]+)`/g,"<code>$1</code>").replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/(^|[^*])\*([^*\n]+)\*/g,"$1<em>$2</em>");
+function md(t){
+  let h="", ul=false, code=null;
+  for (const raw of t.split("\n")){
+    if (/^\s*```/.test(raw)){ if(code===null){ if(ul){h+="</ul>";ul=false} code=[]; } else { h+="<pre><code>"+esc(code.join("\n"))+"</code></pre>"; code=null; } continue; }
+    if (code!==null){ code.push(raw); continue; }
+    const l = raw.trimEnd(), m = l.match(/^\s*[-*•]\s+(.*)/);
+    if (m){ if(!ul){h+="<ul>";ul=true} h+="<li>"+inl(m[1])+"</li>"; continue; }
+    if (ul){h+="</ul>";ul=false}
+    if (/^#{1,2}\s/.test(l)) h+="<h2>"+inl(l.replace(/^#+\s/,""))+"</h2>";
+    else if (/^#{3,}\s/.test(l)) h+="<h3>"+inl(l.replace(/^#+\s/,""))+"</h3>";
+    else if (l.trim()) h+="<p>"+inl(l)+"</p>";
+  }
+  return h + (code!==null?"<pre><code>"+esc(code.join("\n"))+"</code></pre>":"") + (ul?"</ul>":"");
+}
+
+function show(which){
+  ["ask","learn","quiz"].forEach(s => $(s).hidden = s!==which);
+  $("err").hidden = true;
+}
+function fail(e){
+  const msg = e && e.code==="rate_limited" ? "Whoa, too many requests! Give it a moment and try again."
+    : e && e.code==="not_granted" ? "I need permission to use Claude to teach you. Please allow it and try again."
+    : "Oops, something went wrong: " + ((e && e.message) || "unknown error");
+  $("err").textContent = msg; $("err").hidden = false;
+  pet("sad","Oh no, I hit a snag. Let’s try again!",3000);
+}
+
+/* examples */
+examples.forEach(e => { const b=document.createElement("button"); b.className="chip"; b.textContent=e; b.onclick=()=>{$("topic").value=e;$("topic").focus()}; $("ex").appendChild(b); });
+
+/* level pills */
+$("lvls").onclick = e => {
+  const b = e.target.closest("button"); if(!b || state.busy) return;
+  const changed = state.level !== b.dataset.l;
+  state.level = b.dataset.l;
+  [...$("lvls").children].forEach(x => x.classList.toggle("on", x===b));
+  if (changed && state.lastTopic && !$("learn").hidden) teach(state.lastTopic, true);
+  else if (changed) pet("", "Got it, "+state.level+" level it is!", 2500);
+};
+
+/* teaching */
+async function teach(topic, reexplain){
+  if (state.busy) return;
+  const sample = await claude.use("sample");
+  if (!sample){ fail({message:"Claude isn’t available in this view. Open the page while signed in to claude.ai."}); return; }
+  state.busy = true; state.lastTopic = topic;
+  show("learn"); $("learnBtns").hidden = true; $("fuBox").hidden = true;
+  $("lesson").innerHTML = ""; pet("think", reexplain ? "Let me explain it at the "+state.level+" level…" : "Hmm, let me think how to explain this…");
+  const prompt = `You are Mochi, a warm, encouraging study buddy who ONLY teaches university-level mathematics and computer science (calculus, linear algebra, discrete maths, probability and statistics, algorithms, data structures, operating systems, networks, databases, machine learning, programming and so on).
+If the topic is clearly outside maths and computer science, reply with ONE short friendly message that starts with "OFFTOPIC:" explaining you only cover maths and CS and suggesting a related maths or CS topic, and write nothing else.
+Otherwise teach this topic: "${topic}".
+${levelDesc[state.level]}
+Format in Markdown: a short friendly opening line, then ## headings with short sections, bullets where useful, and end with a section "## Quick recap" of 3 bullets. Write maths in plain text with Unicode symbols (∑, ∫, √, ≤, →, x², Aᵀ), never LaTeX. Put code in fenced code blocks with a language tag. Keep it under 400 words. At most 2 emoji.`;
+  try{
+    const res = await sample(prompt,{cache:false, onText:({text})=>{ state.lastFull=text; $("lesson").innerHTML = md(text); }});
+    if (/^\s*OFFTOPIC:/.test(res.text)){ const prev = state.notes[state.notes.length-1]; state.lastTopic = prev ? prev.topic : ""; state.lastFull = prev ? prev.text : ""; show("ask"); pet("", res.text.replace(/^\s*OFFTOPIC:\s*/,""), 0); return; }
+    state.lastFull = res.text; $("lesson").innerHTML = md(res.text);
+    state.notes = state.notes.filter(n => n.topic !== topic);
+    state.notes.push({topic, text:res.text});
+    $("learnBtns").hidden = false; $("fuBox").hidden = false;
+    pet("happy","All done! Tell me when it clicks and I’ll quiz you. 🐾",2500);
+  }catch(e){ if (e && e.text) $("lesson").innerHTML = md(e.text); fail(e); $("learnBtns").hidden = false; }
+  finally{ state.busy = false; }
+}
+
+$("go").onclick = () => { const t=$("topic").value.trim(); if(!t){$("topic").focus();return;} teach(t,false); };
+$("topic").addEventListener("keydown", e => { if ((e.metaKey||e.ctrlKey)&&e.key==="Enter") $("go").click(); });
+
+$("newTopic").onclick = () => { $("topic").value=""; show("ask"); pet("","What else shall we learn? I’ll remember what we covered for the quiz.",0); $("topic").focus(); };
+
+async function followUp(){
+  const q = $("fu").value.trim(); if(!q || state.busy) return;
+  const sample = await claude.use("sample"); if(!sample) return;
+  state.busy = true; $("fuGo").disabled = true; $("fu").value = "";
+  const div = document.createElement("div"); div.className="qa"; div.innerHTML = "<p><strong>You asked:</strong> "+esc(q)+"</p><div></div>";
+  $("lesson").appendChild(div); const out = div.lastChild;
+  pet("think","Good question, thinking…");
+  const prompt = `You are Mochi, a friendly study buddy. The learner is studying "${state.lastTopic}" at the ${state.level} level. ${levelDesc[state.level]}
+Here is the explanation you gave:\n${state.lastFull}\n\nThe learner asks: "${q}"\nAnswer clearly and briefly (under 200 words) in Markdown.`;
+  try{
+    const res = await sample(prompt,{cache:false, onText:({text})=>{ out.innerHTML = md(text); }});
+    out.innerHTML = md(res.text);
+    const n = state.notes.find(x=>x.topic===state.lastTopic); if(n) n.text += "\n\nFollow-up Q: "+q+"\n"+res.text;
+    pet("happy","Does that help? 💡",2000);
+  }catch(e){ fail(e); }
+  finally{ state.busy=false; $("fuGo").disabled=false; }
+}
+$("fuGo").onclick = followUp;
+$("fu").addEventListener("keydown", e => { if(e.key==="Enter") followUp(); });
+
+/* quiz */
+$("got").onclick = startQuiz;
+async function startQuiz(){
+  if (state.busy) return;
+  const sample = await claude.use("sample"); if(!sample){ fail({message:"Claude isn’t available in this view."}); return; }
+  state.busy = true; show("quiz"); $("bar").style.width="0";
+  $("qbody").innerHTML = "<p>Mochi is writing your quiz…</p>"; pet("think","Yay! Let me make some questions for you…");
+  const material = state.notes.map(n => "TOPIC: "+n.topic+"\n"+n.text).join("\n\n---\n\n");
+  const prompt = `Create a 5-question multiple-choice quiz that tests understanding of ONLY the study material below, covering every topic in it. Make them university-level maths or computer science questions at the ${state.level} level (conceptual questions, short worked calculations, or reasoning about a few lines of code; no long code listings). Each question has exactly 4 options and one correct answer. Make wrong options plausible. Vary which position is correct. Give a short, kind explanation (1 to 2 sentences) for each.
+Return ONLY a JSON array, no other text: [{"q":"...","options":["a","b","c","d"],"answer":0,"why":"..."}]
+
+STUDY MATERIAL:
+${material}`;
+  try{
+    const arr = await sample.json(prompt,{cache:false});
+    const qs = (Array.isArray(arr) ? arr : (arr && arr.questions) || []).filter(x => x && x.q && Array.isArray(x.options) && x.options.length>=2 && Number.isInteger(x.answer));
+    if (!qs.length) throw {message:"I couldn’t make a quiz this time."};
+    state.quiz = qs; state.qi = 0; state.score = 0; drawQ(); pet("", "Here we go! You’ve got this.");
+  }catch(e){ fail(e); show("learn"); }
+  finally{ state.busy = false; }
+}
+function drawQ(){
+  const q = state.quiz[state.qi], n = state.quiz.length;
+  $("bar").style.width = (state.qi/n*100)+"%";
+  const b = $("qbody"); b.innerHTML = "";
+  const lab = document.createElement("div"); lab.className="small"; lab.style.margin="0 0 4px"; lab.textContent = "Question "+(state.qi+1)+" of "+n; b.appendChild(lab);
+  const qq = document.createElement("div"); qq.className="q"; qq.textContent = q.q; b.appendChild(qq);
+  const why = document.createElement("div"); why.className="why"; why.hidden = true;
+  const next = document.createElement("button"); next.className="main"; next.hidden = true; next.style.marginTop="12px";
+  next.textContent = state.qi+1<n ? "Next question →" : "See my results";
+  const btns = q.options.map((o,i) => {
+    const x = document.createElement("button"); x.className="opt"; x.textContent = o;
+    x.onclick = () => {
+      btns.forEach((y,j) => { y.disabled = true; if (j===q.answer) y.classList.add("right"); });
+      const ok = i===q.answer;
+      if (ok){ state.score++; pet("happy",["Yes! Purr-fect!","Correct! You’re amazing!","Nailed it! 🎉"][state.qi%3],2500); }
+      else { x.classList.add("wrong"); pet("sad","Not quite, but that’s how we learn!",2500); }
+      why.textContent = (ok ? "✅ " : "💡 ") + (q.why || ""); why.hidden = false; next.hidden = false;
+    };
+    b.appendChild(x); return x;
+  });
+  b.appendChild(why); b.appendChild(next);
+  next.onclick = () => { state.qi++; state.qi<n ? drawQ() : results(); };
+}
+function results(){
+  const n = state.quiz.length, s = state.score, pct = s/n;
+  $("bar").style.width = "100%";
+  const b = $("qbody");
+  b.innerHTML = '<div class="score">'+s+' / '+n+'</div><p style="text-align:center">'+
+    (pct===1 ? "Perfect score! You really understand this." : pct>=.6 ? "Great job! A little review and you’ll be a pro." : "Good effort! Let’s review the topic again and try once more.")+'</p><div class="row" style="justify-content:center"></div>';
+  const row = b.lastChild;
+  const mk = (t,c,f) => { const x=document.createElement("button"); x.className=c; x.textContent=t; x.onclick=f; row.appendChild(x); };
+  mk("🔁 Quiz me again","main",startQuiz);
+  mk("📖 Review the topic","alt",()=>{ show("learn"); $("learnBtns").hidden=false; $("fuBox").hidden=false; pet("","Let’s look at it again!",0); });
+  mk("➕ New topic","alt",()=>{ $("topic").value=""; show("ask"); pet("","What’s next?",0); });
+  mk("🧹 Start fresh","alt",()=>{ state.notes=[]; state.lastTopic=""; $("topic").value=""; show("ask"); pet("","Clean slate! What shall we learn?",0); });
+  if (pct>=.6) pet("happy","So proud of you! 🐾",5000); else pet("sad","Don’t worry, we’ll get it together!",4000);
+}
+</script>
+</body>
+</html>
